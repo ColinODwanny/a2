@@ -15,10 +15,15 @@ class Utils
         textToHex("hello");
         hexToText("636f6c696e");
         binStringToIntArray("010101");
-        int[] myArr = {1,1,1,0,0};
+        int[] myArr = {1,1,1,1};
+        int[] myArr2 = {0,1,0,1};
         intArrayToBinString(myArr);
         hexToBinString("ABC", 16);
         binStringToHex("01101110");
+        XOR(myArr, myArr2);
+        int[] myArr3 = {1,2,3,4,5,5,5,5,2,3,4,1,5,5}; 
+        int[] myArr4 = {0,0,0,0,1};
+        applyPermut(myArr3, myArr4);
     }
 
     /* given a character string, return the sequence of ASCII codes (in 
@@ -159,9 +164,11 @@ class Utils
      */
     static int[] XOR(int[] a, int[] b)
     {
-        /* to be completed */
-        
-        return null; // only here to please the compiler
+        int[] XorResult = new int[a.length];
+        for(int i = 0; i < XorResult.length; i++){
+            XorResult[i] = a[i] ^ b[i];
+        }
+        return XorResult; // only here to please the compiler
     }// XOR method
 
     /* given an n-long permutation of bit positions ranging from 1 to m  and 
@@ -175,9 +182,15 @@ class Utils
      */
     static int[] applyPermut(int[] perm, int[] data)
     {
-        /* to be completed */
-
-        return null; // only here to please the compiler
+        int[] permuttedArr = new int[perm.length];
+        HashMap<Integer, Integer> indexAndValue = new HashMap<>();
+        for(int i = 0; i < data.length; i++){
+            indexAndValue.put(i + 1, data[i]);
+        }
+        for(int i = 0; i < perm.length; i++){
+            permuttedArr[i] = indexAndValue.get(perm[i]); 
+        }
+        return permuttedArr; // only here to please the compiler
     }// applyPermut method
 
 }// class Utils
