@@ -23,9 +23,10 @@ class FeistelAllZeros  extends FeistelFunction
 {
     int[] round(int[] block, int[] key)
     {
-        /* to be completed */
-
-        return null; // here to please the compiler
+        for(int i = 0; i < block.length; i++){
+            block[i] = 0;
+        }
+        return block; // here to please the compiler
     }
 }// class FeistelAllZeros
 
@@ -37,9 +38,10 @@ class FeistelAllOnes  extends FeistelFunction
 {
     int[] round(int[] block, int[] key)
     {
-        /* to be completed */
-
-        return null; // here to please the compiler
+        for(int i = 0; i < block.length; i++){
+            block[i] = 1;
+        }
+        return block; // here to please the compiler
     }
 }// class FeistelAllOnes
 
@@ -52,8 +54,10 @@ class FeistelAnd  extends FeistelFunction
 {
     int[] round(int[] block, int[] key)
     {
-        /* to be completed */
+        for(int i = 0; i < block.length; i++){
+            block[i] = block[i] & key[i];
+        }
 
-        return null; // here to please the compiler
+        return block; // here to please the compiler
     }
 }// class FeistelAnd

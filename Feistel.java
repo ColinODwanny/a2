@@ -29,9 +29,29 @@ class Feistel
      */
     int[] encrypt(int[] block)
     {
-        /* to be completed */
+        int[] right = new int[w];
+        int[] left  = new int[w];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < right.length; j++){
+                left[j]  = block[j];
+                right[j] = block[block.length/2 + j];
+            }
+            right = Utils.XOR(left, F.round(right,K[i + 1]));
+            for(int j = 0; j < block.length/2; j++){
+                block[j] = block[block.length/2 + j];
+                block[block.length/2 + j] = right[j];
+            }
+        }
+        for(int i = 0; i < block.length/2; i++){
+            left[i]  = block[block.length/2 + i];
+            right[i] = block[i];
+        }
+        for(int i = 0; i < block.length/2; i++){
+            block[i] = left[i];
+            block[block.length/2 + i] = right[i];
+        }
 
-        return null; // here to please the compiler
+        return block; // here to please the compiler
     }// encrypt method
 
     /* given a 2w-bit vector of encrypted ciphertext, return the 2w-bit 
@@ -39,15 +59,38 @@ class Feistel
      */
     int[] decrypt(int[] block)
     {
-        /* to be completed */
-        
-        return null; // here to please the compiler     
+        int[][] KCopy = new int[K.length][K[0].length];
+        for(int i = 0; i < K.length; i++){
+            for(int j = 0; j < K[0].length; j++){
+                KCopy[i][j] = K[i][j];
+            }
+        }
+        for(int i = 0; i < K.length - 1; i++){
+            for(int j = 0; j < K[0].length; j++){
+                K[i + 1][j] = KCopy[KCopy.length - i - 1][j];
+            }
+        }
+        int[] decryptedBits = encrypt(block);
+        K = KCopy;
+        return decryptedBits; // here to please the compiler     
     }// decrypt method
 
     /* I will use this driver code to test your program. Do not modify it.
     */
     public static void main(String[] args)
     {
+        //DELETE ME
+        // int[][] keys = {
+        //     {0,0,0,0,0,0},
+        //     {0,1,0,1,0,1},
+        //     {1,0,1,0,1,0},
+        //     {1,1,1,1,1,0}
+        // };
+        // FeistelFunction f = new FeistelAllOnes();
+        // Feistel meep = new Feistel(3, 3, f, keys);
+        // int[] myArr = {1,0,1,0,1,1};
+        // meep.decrypt(meep.encrypt(myArr));
+        //DELETE ME
         if (args.length != 5)
         {
             System.out.println("This program should be invoked with the " +
