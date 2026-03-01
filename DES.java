@@ -14,6 +14,26 @@ class DES extends Feistel
        int[][] ks = { ... };
     */
 
+       static int[][] ks = {
+      {}, // the first round is left unused.
+      {10,51,34,60,49,17,33,57,2,9,19,42,3,35,26,25,44,58,59,1,36,27,18,41,22,28,39,54,37,4,47,30,5,53,23,29,61,21,38,63,15,20,45,14,13,62,55,31},
+      {2,43,26,52,41,9,25,49,59,1,11,34,60,27,18,17,36,50,51,58,57,19,10,33,14,20,31,46,29,63,39,22,28,45,15,21,53,13,30,55,7,12,37,6,5,54,47,23},
+      {51,27,10,36,25,58,9,33,43,50,60,18,44,11,2,1,49,34,35,42,41,3,59,17,61,4,15,30,13,47,23,6,12,29,62,5,37,28,14,39,54,63,21,53,20,38,31,7},
+      {35,11,59,49,9,42,58,17,27,34,44,2,57,60,51,50,33,18,19,26,25,52,43,1,45,55,62,14,28,31,7,53,63,13,46,20,21,12,61,23,38,47,5,37,4,22,15,54},
+      {19,60,43,33,58,26,42,1,11,18,57,51,41,44,35,34,17,2,3,10,9,36,27,50,29,39,46,61,12,15,54,37,47,28,30,4,5,63,45,7,22,31,20,21,55,6,62,38},
+      {3,44,27,17,42,10,26,50,60,2,41,35,25,57,19,18,1,51,52,59,58,49,11,34,13,23,30,45,63,62,38,21,31,12,14,55,20,47,29,54,6,15,4,5,39,53,46,22},
+      {52,57,11,1,26,59,10,34,44,51,25,19,9,41,3,2,50,35,36,43,42,33,60,18,28,7,14,29,47,46,22,5,15,63,61,39,4,31,13,38,53,62,55,20,23,37,30,6},
+      {36,41,60,50,10,43,59,18,57,35,9,3,58,25,52,51,34,19,49,27,26,17,44,2,12,54,61,13,31,30,6,20,62,47,45,23,55,15,28,22,37,46,39,4,7,21,14,53},
+      {57,33,52,42,2,35,51,10,49,27,1,60,50,17,44,43,26,11,41,19,18,9,36,59,4,46,53,5,23,22,61,12,54,39,37,15,47,7,20,14,29,38,31,63,62,13,6,45},
+      {41,17,36,26,51,19,35,59,33,11,50,44,34,1,57,27,10,60,25,3,2,58,49,43,55,30,37,20,7,6,45,63,38,23,21,62,31,54,4,61,13,22,15,47,46,28,53,29},
+      {25,1,49,10,35,3,19,43,17,60,34,57,18,50,41,11,59,44,9,52,51,42,33,27,39,14,21,4,54,53,29,47,22,7,5,46,15,38,55,45,28,6,62,31,30,12,37,13},
+      {9,50,33,59,19,52,3,27,1,44,18,41,2,34,25,60,43,57,58,36,35,26,17,11,23,61,5,55,38,37,13,31,6,54,20,30,62,22,39,29,12,53,46,15,14,63,21,28},
+      {58,34,17,43,3,36,52,11,50,57,2,25,51,18,9,44,27,41,42,49,19,10,1,60,7,45,20,39,22,21,28,15,53,38,4,14,46,6,23,13,63,37,30,62,61,47,5,12},
+      {42,18,1,27,52,49,36,60,34,41,51,9,35,2,58,57,11,25,26,33,3,59,50,44,54,29,4,23,6,5,12,62,37,22,55,61,30,53,7,28,47,21,14,46,45,31,20,63},
+      {26,2,50,11,36,33,49,44,18,25,35,58,19,51,42,41,60,9,10,17,52,43,34,57,38,13,55,7,53,20,63,46,21,6,39,45,14,37,54,12,31,5,61,30,29,15,4,47},
+      {18,59,42,3,57,25,41,36,10,17,27,50,11,43,34,33,52,1,2,9,44,35,26,49,30,5,47,62,45,12,55,38,13,61,31,37,6,29,46,4,23,28,53,22,21,7,63,39}
+      };
+
     // initial permutation
     static int[] IP = { 58, 50, 42, 34, 26, 18, 10, 2, 
                         60, 52, 44, 36, 28, 20, 12, 4, 
@@ -49,8 +69,20 @@ class DES extends Feistel
      */
     static int[][] getSubKeys(String keyHex)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        // Convert the 16-hex-digit key to a 64-bit array of bits.
+        long key = Long.parseUnsignedLong(keyHex, 16);
+        int[] keyBits = new int[64];
+        for (int i = 0; i < 64; i++)
+            keyBits[i] = (int) ((key >> (63 - i)) & 1);
+
+        // Build 17-element array: K[0] is unused; K[1-16] are the 16 subkeys.
+        // ks[round][j] holds the 1-based position in the original key for bit j of subkey round.
+        int[][] subKeys = new int[17][48];
+        for (int round = 1; round <= 16; round++)
+            for (int j = 0; j < 48; j++)
+                subKeys[round][j] = keyBits[ks[round][j] - 1];
+
+        return subKeys;
     }// getSubKeys method
 
     /* given a 64-bit vector of plaintext, return the 64-bit DES-encrypted 
@@ -59,8 +91,10 @@ class DES extends Feistel
      */
     int[] encryptDES(int[] block)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        // Apply IP,send to Feistel.encrypt, apply IP-inverse
+        int[] permuted = Utils.applyPermut(IP, block);
+        int[] encrypted = encrypt(permuted);          // Feistel.encrypt
+        return Utils.applyPermut(IPinv, encrypted);
     }// encryptDES method
 
     /* given a 64-bit vector of DES-encrypted ciphertext, return the 64-bit 
@@ -69,8 +103,10 @@ class DES extends Feistel
      */
     int[] decryptDES(int[] block)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        // Apply IP inverse, send to Feistel.decrypt, apply IP
+        int[] permuted = Utils.applyPermut(IPinv, block);
+        int[] decrypted = decrypt(permuted);          //  Feistel.decrypt
+        return Utils.applyPermut(IP, decrypted);
     }// decryptDES method
 
 }// DES class
@@ -153,8 +189,19 @@ class DESround  extends FeistelFunction
      */
     int[] runThroughSboxes(int[] data)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        int[] output = new int[32];
+        for (int i = 0; i < 8; i++) {
+        int start = i * 6;
+        int row = (data[start] << 1) + data[start + 5];  // row: bits 1 and 6
+        int col = (data[start + 1] << 3) + (data[start + 2] << 2) + (data[start + 3] << 1) + data[start + 4];  // col: bits 2-5
+        int sboxValue = S[i + 1][row][col];  // S-box result (4 bits)
+
+        // Place the 4-bit output into the output array
+        for (int j = 0; j < 4; j++) {
+            output[i * 4 + (3 - j)] = (sboxValue >> j) & 1;
+        }
+    }
+    return output;
     }// runThroughSboxes method
 
     /* compute F(data,key) where F is the DES round function,
@@ -163,8 +210,25 @@ class DESround  extends FeistelFunction
     */
     int[] round(int[] data, int[] subkey)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        // Step 1: Expand the 32-bit input to 48 bits
+    int[] expanded = new int[48];
+    for (int i = 0; i < 48; i++) {
+        expanded[i] = data[expandP[i] - 1];  // expandP is E-expansion array
+    }
+
+    // Step 2: XOR with the 48-bit subkey
+    int[] xored = Utils.XOR(expanded, subkey);
+
+    // Step 3: Run through S-boxes to get a 32-bit result
+    int[] sboxOutput = runThroughSboxes(xored);
+
+    // Step 4: Apply the P-box permutation to the 32-bit S-box result
+    int[] pboxOutput = new int[32];
+    for (int i = 0; i < 32; i++) {
+        pboxOutput[i] = sboxOutput[P[i] - 1];  // P is the P-box array
+    }
+
+    return pboxOutput;
    }// round method
 
 }// class DESround 
