@@ -112,12 +112,14 @@ class ComputeSubKeys {
             int[] c; // left
             int[] d; // right
 
+
+            //Okayso the original code shifted by 2 for rounds 1, 2, 9, and 16, but the instructions say to shift by 1 for those rounds and by 2 for the others. So I switched the conditions in the if statement.
             if (k == 1 || k == 2 || k == 9 || k == 16) { // left shift the key halves
-                c = shiftLeftBy2(PC1c);
-                d = shiftLeftBy2(PC1d);
-            } else {
                 c = shiftLeftBy1(PC1c);
                 d = shiftLeftBy1(PC1d);
+            } else {
+                c = shiftLeftBy2(PC1c);
+                d = shiftLeftBy2(PC1d);
             }
 
             int[] CD = new int[56]; // combined shifted key
@@ -142,4 +144,9 @@ class ComputeSubKeys {
         }
 
     }// outputHardwiredSchedule method
+
+    public static void main(String[] args) {
+        outputHardwiredSchedule();
+    }// main method
+
 }// class ComputeSubKeys
