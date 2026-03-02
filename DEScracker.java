@@ -9,6 +9,26 @@
 class DEScracker
 {
     /* feel free to declare helper methods here, if needed */
+   //Getting an array of all posible keys
+   static final char[] HEX = "0123456789ABCDEF".toCharArray();
+
+    static String[] keySpace()
+    {
+        String[] keys = new String[HEX.length * HEX.length];
+        int index = 0;
+
+        for (char firstDigit : HEX)
+        {
+            for (char secondDigit : HEX)
+            {
+                String firstHalf = String.valueOf(firstDigit).repeat(8);
+                String secondHalf = String.valueOf(secondDigit).repeat(8);
+                keys[index++] = firstHalf + secondHalf;
+            }
+        }
+
+        return keys;
+    }
 
 
     /* complete the body of this method in between the provided code which
