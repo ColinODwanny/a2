@@ -1,8 +1,9 @@
 /*****************************************************
-   CS 326 - Spring 2026 - Assignment #1
-   Student #1's full name: ______
-   Student #2's full name: ______
-   Student #3's full name: ______
+   CS 326 - Spring 2026 - Assignment #2
+
+   Student's full name: Bakary Ceesay
+   Student's full name: Luke Johnson
+   Student's full name: Colin O'Dwanny
 *****************************************************/
 
 import java.util.*;

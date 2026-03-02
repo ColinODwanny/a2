@@ -1,9 +1,9 @@
 /*****************************************************
    CS 326 - Spring 2026 - Assignment #2
 
-   Student's full name: _____
-   Student's full name: _____
-   Student's full name: _____
+   Student's full name: Bakary Ceesay
+   Student's full name: Luke Johnson
+   Student's full name: Colin O'Dwanny
 *****************************************************/
 
 
@@ -187,6 +187,8 @@ class DESround  extends FeistelFunction
        the data input is a 48-bit vector
        the output is a 32-bit vector defined in FIPS PUB 46-3
      */
+    //How this code works: we loop through each of the 8 S-boxes, for each S-box we determine the row and column based on the input bits,
+    //  we then look up the value in the S-box, and finally we convert that value to a 4-bit output and place it in the correct position in the output array.
     int[] runThroughSboxes(int[] data)
     {
         int[] output = new int[32];
@@ -231,4 +233,43 @@ class DESround  extends FeistelFunction
     return pboxOutput;
    }// round method
 
+
+   /*
+      The main method is provided for testing your implementation of DES. You can run it with command-line arguments to encrypt or decrypt a block of data using a specified key. 
+      The usage is as follows:
+      
+      java DESround <e|d> <keyHex> <plaintextHex>
+      
+      where:
+      - e = encrypt, d = decrypt
+      - keyHex  = 16 hex digits (64-bit key)
+      - plaintextHex = 16 hex digits (64-bit block)
+    */
+      public static void main(String[] args){
+         if (args.length != 3) {
+            System.out.println("Usage: java DESround <e|d> <keyHex> <plaintextHex>");
+            System.out.println("  e = encrypt, d = decrypt");
+            System.out.println("  keyHex  = 16 hex digits (64-bit key)");
+            System.out.println("  plaintextHex = 16 hex digits (64-bit block)");
+            System.exit(1);
+         }
+
+         String mode      = args[0].toLowerCase();
+         String keyHex    = args[1].toUpperCase();
+         String dataHex   = args[2].toUpperCase();
+
+         DES des   = new DES(DES.getSubKeys(keyHex));
+         int[] in  = Utils.binStringToIntArray(Utils.hexToBinString(dataHex, 64));
+
+         if (mode.equals("e")) {
+            int[] out = des.encryptDES(in);
+            System.out.println("Ciphertext:  " + Utils.binStringToHex(Utils.intArrayToBinString(out)));
+         } else if (mode.equals("d")) {
+            int[] out = des.decryptDES(in);
+            System.out.println("Plaintext:   " + Utils.binStringToHex(Utils.intArrayToBinString(out)));
+         } else {
+            System.out.println("Unknown mode '" + args[0] + "'. Use 'e' to encrypt or 'd' to decrypt.");
+            System.exit(1);
+         }
+      }
 }// class DESround 

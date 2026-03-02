@@ -1,9 +1,9 @@
 /*****************************************************
    CS 326 - Spring 2026 - Assignment #2
 
-   Student's full name: _____
-   Student's full name: _____
-   Student's full name: _____
+   Student's full name: Bakary Ceesay
+   Student's full name: Luke Johnson
+   Student's full name: Colin O'Dwanny
 *****************************************************/
 
 import java.io.File;
@@ -20,6 +20,9 @@ class DEScracker
    static int numWords;
    static int maxLength;
 
+
+    //This method loads the dictionary from the file and initializes the instance variables.
+    //  It was taken directly from dict,Java from assignment 1 and modified to be static and to fit the needs of this class.
     static void loadDictionary(String fileName)
     {
         fileName = "dictionary.txt";
@@ -47,6 +50,8 @@ class DEScracker
         }
     }
 
+    //This method counts the number of occurrences of dictionary words in the given text.
+    // IT WAS TAKEN DIRECTLY FROM dict.Java from assignment 1 and modified to be static and to fit the needs of this class.
     static int countWords(String text)
     {
         int dictWordOccurrences = 0;
@@ -63,6 +68,9 @@ class DEScracker
         return dictWordOccurrences;
     }
 
+
+    //gets an array of all possible keys in the key space. Each key is a 16-character string in hexadecimal format,
+    //  where the first 8 characters are the same and the last 8 characters are the same. 
     static String[] keySpace()
     {
         String[] keys = new String[HEX.length * HEX.length];
@@ -81,6 +89,11 @@ class DEScracker
         return keys;
     }
 
+    // This method takes a ciphertext block in hexadecimal format and a key in hexadecimal format, decrypts the block using the key,
+    //  and returns the resulting plaintext as a string.
+    //how the decryption works: we create a DES object with the subkeys generated from the keyHex,
+    //  then we convert the cipherHex to binary and then to an int array of bits, we decrypt the bits using the DES object, convert the resulting plaintext bits back to hexadecimal, 
+    // and finally convert that hexadecimal string to text.
     static String decryptBlock(String cipherHex, String keyHex)
     {
         DES des = new DES(DES.getSubKeys(keyHex));

@@ -3,9 +3,9 @@ import java.util.HashMap;
 /*****************************************************
    CS 326 - Spring 2026 - Assignment #2
 
-   Student's full name: _____
-   Student's full name: _____
-   Student's full name: _____
+   Student's full name: Bakary Ceesay
+   Student's full name: Luke Johnson
+   Student's full name: Colin O'Dwanny
 *****************************************************/
 
 class Utils
