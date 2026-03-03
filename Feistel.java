@@ -79,18 +79,6 @@ class Feistel
     */
     public static void main(String[] args)
     {
-        //DELETE ME
-        // int[][] keys = {
-        //     {0,0,0,0,0,0},
-        //     {0,1,0,1,0,1},
-        //     {1,0,1,0,1,0},
-        //     {1,1,1,1,1,0}
-        // };
-        // FeistelFunction f = new FeistelAllOnes();
-        // Feistel meep = new Feistel(3, 3, f, keys);
-        // int[] myArr = {1,0,1,0,1,1};
-        // meep.decrypt(meep.encrypt(myArr));
-        //DELETE ME
         if (args.length != 5)
         {
             System.out.println("This program should be invoked with the " +

@@ -11,21 +11,6 @@ import java.util.HashMap;
 class Utils
 {
 
-    public static void main (String[] args){
-        textToHex("hello");
-        hexToText("636f6c696e");
-        binStringToIntArray("010101");
-        int[] myArr = {1,1,1,1};
-        int[] myArr2 = {0,1,0,1};
-        intArrayToBinString(myArr);
-        hexToBinString("ABC", 16);
-        binStringToHex("01101110");
-        XOR(myArr, myArr2);
-        int[] myArr3 = {1,2,3,4,5,5,5,5,2,3,4,1,5,5}; 
-        int[] myArr4 = {0,0,0,0,1};
-        applyPermut(myArr3, myArr4);
-    }
-
     /* given a character string, return the sequence of ASCII codes (in 
        hexadecimal) for the characters in the string. Sample input/output:
           input: "ABC"       output: "414243"
